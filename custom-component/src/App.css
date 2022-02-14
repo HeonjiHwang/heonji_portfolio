@@ -1,0 +1,23 @@
+body{
+  margin:0px;
+  padding:0px;
+}
+h3{
+  margin:0px;
+}
+.App {
+ padding:10px; 
+}
+.area{
+  border: 3px solid #e4e4e4;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom:10px;
+  min-height:150px;
+}
+.area > h3{
+  margin-bottom:45px;
+}
+.area > div{
+  text-align: center;
+}
