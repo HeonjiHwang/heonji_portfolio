@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const pgDB = require("../db.js").pgClient;
+const mailSender = require("../mailSender");
+const jwt = require("jsonwebtoken");
 
 pgDB.init()
 pgDB.connect();
@@ -30,7 +32,7 @@ router.get("/getSNSData", (req, res)=>{
         ORDER BY create_time desc
     `;
     
-    console.log("getSNSData :: ");
+    console.log("getSNSData > ");
     pgDB.sendQuery(query, (err, result)=>{
         if(err){
             console.error(err);
@@ -39,6 +41,65 @@ router.get("/getSNSData", (req, res)=>{
 
         res.send({data:result.rows});
     });
+});
+
+router.get("/getSigninInfo", (req, res)=>{
+    let {user_pwd, user_id} = req.query;
+
+    let query = `
+        SELECT CASE WHEN failed_count >= 3 THEN 1
+        WHEN EXTRACT('day' FROM now() - ui.pw_changed_time) > 90 THEN 1    
+        ELSE 0 END is_lock,
+        CASE WHEN failed_count < 3 AND encode(sha256('${user_pwd}'::bytea), 'hex') = ui.user_pwd THEN 1 ELSE 0 END is_valid,
+        failed_count , user_cd, user_id, user_name, phone_number, email,
+        last_login_time, last_login_ip,
+        CAST(90 - EXTRACT('day' FROM now() - ui.pw_changed_time) AS Integer) pwd_remain
+        FROM user_info ui
+        WHERE ui.user_id = '${user_id}'
+    `;
+
+    console.log("getSigninInfo > ");
+    pgDB.sendQuery(query, (err, result)=>{
+        if(err){
+            console.error(err);
+            res.send(err);
+        }
+        
+        let data = result.rows[0];
+        
+        //비밀번호 재설정 페이지로 리다이렉션 ㄱㄱ
+        if(data.is_valid === 0)
+            return;
+        else{
+            //비밀번호 재설정 페이지
+            if(data.is_lock === 1 || data.pwd_remain <= 10){
+                return;
+            }
+
+            //token 생성
+            let {user_id, user_name, user_cd, email, phone_number} = data;
+            let obj = {user_id:user_id, email:email, phone_number:phone_number, user_cd:user_cd, user_name:user_name};
+            let token = jwt.sign({
+                data : obj,
+                exp : Math.floor(Date.now() / 1000) + (60*60)
+            }, process.env.SECRET_KEY);
+
+            res.send({token:token});
+        }
+    });
+});
+
+/**아이디 찾기*/
+router.get("/getUserID", (req, res)=>{
+    let {user_id, user_email} = req.query;
+
+    let query = `
+        
+    `;
 })
+
+router.post("/sendMail", (req, res)=>{
+
+});
 
 module.exports = router;

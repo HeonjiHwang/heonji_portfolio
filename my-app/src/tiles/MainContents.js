@@ -1,6 +1,5 @@
-import { useState } from "react";
 import styled from 'styled-components';
-import {Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Home from '../pages/Home'
 
 const MainContentWrapper = styled.div`
@@ -11,14 +10,15 @@ const MainContentWrapper = styled.div`
 
 function MainContents(){
     return(
-        <MainContentWrapper>
-            {/* <Router>
-                <Routes>
-                    <Route></Route>
-                </Routes>
-            </Router> */}
-            <Home/>
-        </MainContentWrapper>
+        <>
+            <MainContentWrapper>
+                <Router>
+                    <Routes>
+                        <Route path="/home" element={<Home/>}></Route>
+                    </Routes>
+                </Router>
+            </MainContentWrapper>
+        </>
     )
 }
 

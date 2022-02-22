@@ -1,8 +1,6 @@
-import {useState} from 'react';
 import {Axios} from '../utils/common.js';
 import Encryption from '../utils/crypt.js'
 import styled from 'styled-components';
-import Test from '../utils/crypt.js';
 
 const SignInWrapper = styled.div`
     width:100%;
@@ -11,6 +9,7 @@ const SignInWrapper = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
+    user-select:none;
 `;
 
 const SignInContent = styled.div`
@@ -98,20 +97,49 @@ const UserInfoWrapper = styled.div`
         color:#383838;
         text-decoration:none;
         margin-left:10px;
+        padding-right:10px;
+        border-right:1px solid #c7c2c2;
+    }
+    a:last-child{
+        padding-right:0px;
+        border-right:0px;
     }
 `;
 
 const SignIn = ()=>{
+    const handleOnSignInKeyUp = (ev)=>{
+        if(ev.keyCode === 13){
+            handleSignInForm();
+        }
+    }
     const handleSignInForm = ()=>{
-        let txt = Encryption.encrypt("f3dtop0!");
-        console.log(txt);
+        let user_id = document.getElementById("user_id").value.replaceAll(" ", "");
+        let user_pwd = document.getElementById("user_pwd").value.replaceAll(" ", "");
 
-        let bool = Encryption.comparePwd(txt.encryptedPwd, "f3dtop0!");
-        console.log(bool);
+        if(user_id === "" || user_pwd === ""){
+            window.confirm("아이디 혹은 비밀번호를 확인해주세요");
+            return;
+        }
+
+        let txt = Encryption.encrypt(user_pwd);
+        let param = {user_id:user_id, user_pwd:txt};
+        
+        Axios.get("/getSigninInfo", param).then((res)=>{
+            if(res){
+                let token = res.data.token;
+                if(token){
+                    window.localStorage.setItem("token", token);
+                    window.location.href = "/home";
+                }
+            }
+        }).catch(err=>{
+            console.error(err);
+        })
+
     }
 
     return(
-        <SignInWrapper>
+        <SignInWrapper onKeyUp={handleOnSignInKeyUp}>
             <SignInContent>
                 <SiteTitleWrapper>
                     <img src={require("../imgs/logo.png")} alt="logo"/>
@@ -125,9 +153,9 @@ const SignIn = ()=>{
                     </SignInForm>
                 </SignInFormWrapper>
                 <UserInfoWrapper>
-                    <a href="#">아이디 찾기</a>
-                    <a href="#">비밀번호 찾기</a>
-                    <a href="#">회원가입</a>
+                    <a href="/find">아이디 찾기</a>
+                    <a href="/find">비밀번호 찾기</a>
+                    <a href="/">회원가입</a>
                 </UserInfoWrapper>
             </SignInContent>
         </SignInWrapper>

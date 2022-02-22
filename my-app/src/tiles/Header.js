@@ -311,7 +311,11 @@ const AlarmList = ({data, idx})=>{
 
 const DropdownMenu = ({isOpen})=>{
     const menu = ["My Profile", "Add New Post", "Alarm", "", "Logout"];
-    const menuImg = [profile, add, alarm, "", logout]
+    const menuImg = [profile, add, alarm, "", logout];
+
+    const handleOnRightNavClick = ()=>{
+        delete window.localStorage["token"];
+    }
 
     return (
         <DropdownMenuOverlay isOpen={isOpen}>
@@ -320,7 +324,7 @@ const DropdownMenu = ({isOpen})=>{
                     {
                         menu.map((val, idx)=>{
                             return(
-                                val !== "" ? <li key={idx}><img src={menuImg[idx]} alt={val}/><a href="#">{val}</a></li> : <hr key={idx}/>
+                                val !== "" ? <li key={idx}><img src={menuImg[idx]} alt={val}/><a href="/" onClick={handleOnRightNavClick}>{val}</a></li> : <hr key={idx}/>
                             )
                         })
                     }

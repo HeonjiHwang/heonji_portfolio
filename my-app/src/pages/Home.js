@@ -156,16 +156,4 @@ const Content = ({picture, text})=>{
     )
 }
 
-function getDate(date){
-    let now = !date ? new Date() : new Date(date);
-    if(!now) return;
-  
-    let year = now.getFullYear();
-    let month = now.getMonth() >= 10 ? now.getMonth() : "0" + now.getMonth();
-    let day = now.getDate() >= 10 ? now.getDate() : "0" + now.getDate();
-    let hour = now.getHours() >= 10 ? now.getHours() : "0" + now.getHours();
-    let minute = now.getMinutes() >= 10 ? now.getMinutes() : "0" + now.getMinutes();
-  
-    return year + "-" + month + "-" + day + " " + hour + ":" + minute;
-  }
 export default Home;

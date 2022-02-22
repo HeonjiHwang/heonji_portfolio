@@ -16,9 +16,7 @@ const Encryption = {
             plainText, key512bits10000Iterations, {iv:crypto.enc.Hex.parse(iv)}
         )
 
-        return {
-            encryptedPwd : encrypted.toString()
-        }
+        return encrypted.toString();
     },
     comparePwd:(encryptedText, originCrtypedText)=>{
         if(!encryptedText)
