@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const pgDB = require("../db.js").pgClient;
 const mailSender = require("../mailSender");
+const queryMapper = require("./query.js");
 const jwt = require("jsonwebtoken");
 
 pgDB.init()
@@ -91,11 +92,9 @@ router.get("/getSigninInfo", (req, res)=>{
 
 /**아이디 찾기*/
 router.get("/getUserID", (req, res)=>{
-    let {user_id, user_email} = req.query;
-
-    let query = `
-        
-    `;
+    console.log(queryMapper);
+    let query = queryMapper.getUserID(req.query);
+    console.log(query);
 })
 
 router.post("/sendMail", (req, res)=>{

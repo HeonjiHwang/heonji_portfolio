@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {Axios} from '../utils/common.js';
 import styled from 'styled-components';
 
 const FindUserInfoWrapper = styled.div`
@@ -103,6 +104,17 @@ const Button = styled.button`
     }
 `;
 
+const FindedIDListWraper = styled.div`
+    width:calc(100% - 20px);
+    padding:0px 10px;
+    margin-top:30px;
+    border:1px solid #e4e4e4;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+`;
+
 const FindUserInfo = ()=>{
     const [currentTab, setCurrentTab] = useState("findID")
     let arr = [{id:"findID", text:"아이디 찾기"}, {id:"findPwd", text:"비밀번호 찾기"}];
@@ -151,16 +163,44 @@ const TabContent = ({currentTab})=>{
 }
 
 const FindIDForm = ()=>{
+    const [isFind, setIsFind] = useState(false);
+    const [isShow, setIsShow] = useState(true);
 
     const handleOnClickFindID = ()=>{
         let name = document.getElementById("user_name");
         let email = document.getElementById("user_email");
+        let param = {user_name:name, user_email:email};
+
+        Axios.get("/getUserID", param).then((res)=>{
+            if(res){
+                console.log(res.data);
+            }
+        }).catch(err=>{
+            console.error(err);
+        })
+        setIsShow(true);
     }
     return(
         <>
-            <Input type="text" id="user_name" placeholder="이름"/>
-            <Input type="text" id="user_email" placeholder="이메일"/>
-            <Button>아이디 찾기</Button>
+            {
+                isShow ? 
+                <>
+                <Input type="text" id="user_name" placeholder="이름" autoComplete='off'/>
+                <Input type="text" id="user_email" placeholder="이메일" autoComplete='off'/>
+                <Button onClick={handleOnClickFindID}>아이디 찾기</Button>
+                </>
+                : isFind ? 
+                <>
+                <p>고객님의 정보와 일치하는 아이디 목록입니다.</p>
+                <FindedIDListWraper>
+                    <span></span>
+                </FindedIDListWraper>
+                </>
+                :
+                <>
+                </>
+            }
+            
         </>
     )
 }
