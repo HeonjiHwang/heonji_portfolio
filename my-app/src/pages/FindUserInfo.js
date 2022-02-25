@@ -167,9 +167,10 @@ const FindIDForm = ()=>{
     const [isShow, setIsShow] = useState(true);
 
     const handleOnClickFindID = ()=>{
-        let name = document.getElementById("user_name");
-        let email = document.getElementById("user_email");
+        let name = document.getElementById("user_name").value;
+        let email = document.getElementById("user_email").value;
         let param = {user_name:name, user_email:email};
+        console.log(param);
 
         Axios.get("/getUserID", param).then((res)=>{
             if(res){
