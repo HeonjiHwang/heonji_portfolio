@@ -14,7 +14,8 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<SignIn/>}></Route>
-            <Route path="/find" element={<FindUserInfo/>}></Route>
+            <Route path="/findID" element={<FindUserInfo path={"findID"}/>}></Route>
+            <Route path="/findPwd" element={<FindUserInfo path={"findPwd"}/>}></Route>
           </Routes>
         </Router>
       </>

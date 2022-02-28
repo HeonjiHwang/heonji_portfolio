@@ -1,11 +1,13 @@
 const router = require("express").Router();
 const pgDB = require("../db.js").pgClient;
-const mailSender = require("../mailSender");
+const {mailSender} = require("../mailSender");
 const {queryMapper} = require("./query.js");
 const jwt = require("jsonwebtoken");
 
 pgDB.init()
 pgDB.connect();
+
+let tmpVerifyNum = {};
 
 router.get("/", (req, res)=>{
     res.send("Hello React x Node.js");
@@ -71,12 +73,33 @@ router.get("/getUserID", (req, res)=>{
             res.send(err);
             return;
         }
-
+        res.send({data:result.rows});
     })
 })
 
-router.post("/sendMail", (req, res)=>{
-
+router.get("/checkUser", (req, res)=>{
+    let query = queryMapper.checkUser(req.query);
+    pgDB.sendQuery(query, (err, result)=>{
+        if(err){
+            console.error(err);
+            res.send(err);
+            return;
+        }
+        res.send(result.rows);
+    })
 });
 
+router.post("/sendMail", (req, res)=>{
+    let guid = getGUID();
+    tmpVerifyNum[req.user_id] = guid;
+    let result = mailSender.sendMail(req.body.user_email, guid);
+    console.log(result);
+});
+
+const getGUID = ()=>{
+    function _s4() {
+        return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+    }
+    return _s4() + _s4();    
+}
 module.exports = router;

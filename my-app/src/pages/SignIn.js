@@ -153,8 +153,8 @@ const SignIn = ()=>{
                     </SignInForm>
                 </SignInFormWrapper>
                 <UserInfoWrapper>
-                    <a href="/find">아이디 찾기</a>
-                    <a href="/find">비밀번호 찾기</a>
+                    <a href="/findID">아이디 찾기</a>
+                    <a href="/findPwd">비밀번호 찾기</a>
                     <a href="/">회원가입</a>
                 </UserInfoWrapper>
             </SignInContent>

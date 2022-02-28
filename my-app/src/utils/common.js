@@ -9,7 +9,7 @@ exports.Axios = {
         if(param){
             let arr = [];
             for(let k in param){
-                arr.push(`${k}=${param[k]}`);
+                arr.push(`${k}=${encodeURIComponent(param[k])}`);
             }
             let str = "?" + arr.join("&");
             finalURL += str;
@@ -20,8 +20,14 @@ exports.Axios = {
             console.error(e);
         }
     },
-    post:()=>{
-
+    post:(url, param)=>{
+        let finalURL = defaultUrl + url;
+        console.log(param);
+        try{
+            return axios.post(finalURL, param);
+        }catch(e){
+            console.error(e);
+        }
     }
 }
 
