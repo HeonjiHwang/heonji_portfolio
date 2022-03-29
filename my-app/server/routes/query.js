@@ -44,4 +44,9 @@ exports.queryMapper = {
             ORDER BY create_time desc
         `;
     },
+    setUserInfo : ()=>{
+        return `
+            
+        `;
+    }
 }

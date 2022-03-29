@@ -7,11 +7,11 @@ exports.pgClient = {
     client:null,
     init:()=>{
         this.client = new Client({
-            user:'postgres', password:'kit2019',
-            host:'localhost', port:7011,
-            database:'sns_data'
+            user:'heonji', password:'kit2019',
+            host:'localhost', port:5432,
+            database:'postgres'
         });
-    },
+    },  
     connect:()=>{
         if(!this.client){
             console.error(errorMsg[1]);
