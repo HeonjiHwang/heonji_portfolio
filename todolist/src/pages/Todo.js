@@ -1,12 +1,13 @@
 import {useState} from 'react';
 import styled from 'styled-components';
+import Button from '@mui/material/Button'
 import TodoList from "./TodoList";
+import TodoControl from './TodoControl';
 
 const TodoInputWrapper = styled.div`
     display:flex;
     flex-direction:row;
-    width:500px;
-    margin:0 auto;
+    width:100%;
     padding:20px 0px;
 
     div:first-child{
@@ -15,7 +16,6 @@ const TodoInputWrapper = styled.div`
         height:32px;
     }
     div:last-child{
-        width:150px;
         height:34px;
     }
 `;
@@ -31,13 +31,6 @@ const Input = styled.input`
     }
 `;
 
-const Button = styled.button`
-    border:0px;
-    outline:0px;
-    width:100%;
-    height:100%;
-`;
-
 
 const Todo = ()=>{
     const [todoList, setTodoList] = useState([]);
@@ -45,7 +38,7 @@ const Todo = ()=>{
     const handleOnClickSubmit = ()=>{
         let title = document.getElementById("todoText");
 
-        if(title != ""){
+        if(title.value != ""){
             setTodoList([...todoList, title.value]);
             title.value = "";
         }else{
@@ -53,14 +46,36 @@ const Todo = ()=>{
         }
     }
 
+    const handleOnKeyUp = (e)=>{
+        if(e.keyCode != 13) return;
+
+        let title = e.target.value;
+
+        if(title != ""){
+            setTodoList([...todoList, title]);
+            e.target.value = "";
+        }else{
+            return;
+        }
+    }
+
     return (
-        <>
+        <div className="wrapper">
             <TodoInputWrapper>
-                <div><Input type="text" id="todoText" placeholder="할일!!"/></div>
-                <div><Button onClick={handleOnClickSubmit}>SUBMIT</Button></div>
+                <div><Input type="text" id="todoText" placeholder="할일!!" onKeyUp={handleOnKeyUp}/></div>
+                <div><Button onClick={handleOnClickSubmit} color="secondary" variant="contained">SUBMIT</Button></div>
             </TodoInputWrapper>
-            <TodoList/>
-        </>
+            <ul>
+                {
+                    todoList.map((val, key)=>{
+                        return(
+                            <TodoList todo={val} key={key}/>
+                        )
+                    })
+                }
+            </ul>
+            <TodoControl/>
+        </div>
     )
 }
 
