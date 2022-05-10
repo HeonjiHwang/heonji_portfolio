@@ -1,0 +1,21 @@
+{
+    "systemtitle"               : "테스트 페이지",
+    "boardlist"                 : "게시판 리스트",
+    "search"                    : "검색",
+    "title"                     : "제목",
+    "id"                        : "아이디",
+    "date"                      : "날짜",
+    "fail"                      : "실패",
+    "success"                   : "성공",
+    "thereisnodata"             : "데이터가 없습니다.",
+    "boarddetail"               : "게시판 상세보기",
+    "contents"                  : "내용",
+    "registerboard"             : "게시판 등록",
+    "modifyboard"               : "게시판 수정",
+    "list"                      : "목록",
+    "register"                  : "등록",
+    "modify"                    : "수정",
+    "pleasechecktitle"          : "제목을 입력해주세요.",
+    "delete"                    : "삭제",
+    "doyouwanttodelete"                  : "삭제하시겠습니까?"
+}

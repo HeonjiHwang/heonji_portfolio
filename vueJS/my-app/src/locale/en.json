@@ -1,0 +1,12 @@
+{
+    "systemtitle"               : "Test Page",
+    "boardlist"                 : "Board List",
+    "search"                    : "search",
+    "title"                     : "title",
+    "id"                        : "ID",
+    "date"                      : "date",
+    "fail"                      : "FAIL",
+    "thereisnodata"             : "There is No Data",
+    "boarddetail"               : "Details",
+    "contents"                  : "Contents"
+}
