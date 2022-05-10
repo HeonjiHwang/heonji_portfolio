@@ -1,0 +1,144 @@
+1.	설치
+	npm일 경우 ----->	[npm install vuex@next --save]
+	yarn일 경우 ---->	[yarn add vuex@next --save]
+	
+2.	사용방법
+
+	<@/store/index.js>
+	import Vue from 'vue'
+	import Vuex from 'Vuex'
+	
+	Vue.use(Vuex);
+	const store = new Vuex.Store({
+		state:{
+			...
+		}
+	});
+	
+	<@/main.js>
+	import store from '@/store'
+	
+	new Vew({
+		...,
+		store,
+		...
+	}).$mount(...);
+
+3.  state 사용
+
+	- state 접근 방식
+	태그에서 {{$store.state.~}}
+	스크립트에서 {{this.$store.state.~}}
+
+4.	Getters 사용
+	여러 컴포넌트에서 같은 로직을 사용할 경우 Vuex에서 수행하도록 로직을 짜고
+	각 컴포넌트에서는 해당 함수를 불러오는 방식으로 하기 위한 것!!
+	
+	ex)
+	
+	//store.js
+	getters:{
+		addTwice(state){
+			return state.counter * 2;
+		}
+	}
+	
+	//other components
+	computed:{
+		addTwice(){
+			return this.$store.getters.addTwice;
+		}
+	}
+	
+	***** Vuex의 Helper함수인 mapGetters를 사용할 경우 가독성 올라감 *****
+	
+	//store.js
+	getters:{
+		getCounter(state){
+			return state.counter;
+		}
+	}
+	
+	import {mapGetters} from 'Vuex';
+	
+	export default{
+		...,
+		computed : mapGetters({
+			parentCounter : 'getCounter'
+		}),
+		...
+	}
+	
+	**** 위와 같이 사용할 경우 computed 속성을 사용할 수 없게 되어 아래와 같이 변경!! ****
+	
+	export default{
+		...,
+		computed : {
+			...mapGetters([
+				'getCounter',
+				...
+			]),
+			anotherCounter(){
+			}
+		}
+	}
+	
+5.	Mutation (동기적 로직을 정의)
+	Vuex의 데이터 즉 state값을 변경하는 로직을 말한다.
+	
+	- Getters와의 차이점
+		파라미터를 바다 Vuex에 넘길 수 있다.
+		computed가 아닌 methods에 등록한다.
+	
+	ex)
+	
+	//store.js
+	mutations:{
+		addCounter(state, payload){
+			return state.counter++;
+		}
+	}
+	
+	//component
+	methods : {
+		addCounter(){
+			this.$store.commit('addCounter');
+		}
+	}
+	
+	*** 직접 mutations에 접근하지 않고 commit을 이용해 함수 호출 ***
+	
+	
+	***** Vuex의 Helper함수인 mapMutations을 사용할 경우 가독성 올라감 *****
+	ex)
+	methods:{
+		...mapMutations({
+			addCounter : 'addCounter'
+		}),
+		...
+	}
+	
+6.	Actions (비동기적 로직을 정의)
+	setTimeout()이나 서버와의 http 통신으로 결과를 받아올 타이밍이 예측되지 않는 로직은 Actions에 선언
+	
+	//ex
+	getServerData(context){
+		return axios.get("sample.json").then(()=>{
+			//...
+		})
+	},
+	delayFewMinutes(context){
+		return setTimeout(()=>{
+			this.commit('addCounter');
+		}, 1000);
+	}
+	
+	*** http 요청이나 setTimeout같은 비동기 처리 로직들은 actions에 선언해준다.
+	
+	사용하는법!!
+	methods:{
+		...,
+		fnSomthing(){
+			this.$store.dispatch('fnSomething'); //dispatch이용
+		}
+	}

@@ -1,0 +1,116 @@
+vue는 다운로드 받아 직접 <script>에 추가하거나 CDN으로 불러와 사용할 수 있음.
+
+1. 	npm으로 설치하기
+	[npm install -g @vue/cli]  or  [yarn global add @vue/cli]
+	
+	[npm i -g @vue/cli-init]
+	
+	확인
+	[vue -V]
+	
+	visual studio code 터미널에서 vue 명령어 안될 경우!
+	1. 	관리자 모드로 vsc 열기
+	2. 	[get-executionpolicy]  -------------------  restricted
+		[set-executionpolicy remotesigned]
+		[get-executionpolicy]  -------------------  remotesigned
+	3. 	vue -V //잘됨
+	
+2.	vue project 생성
+	[vue create {project-name}]  or  [vue init webpack {project-name}]
+	
+3.	디렉토리 구조
+	dist				프로젝트 빌드 시 생성
+	node_modules		모듈
+	public			
+	router				path/url 관리
+	src	
+		assets			정적 파일 관리(img, css, js)
+		components		컴포넌트 관리
+		App.vue			최상위 컴포넌트
+		main.js			최초 실행되는 자바스크립트 (모듈 설정)
+	babel.config.js		바벨 환경설정 파일
+	package.json		프로젝트 정보&실행, 빌드 명령어 및 의존성 관리하는 파일
+	package-lock.json	패키지 잠금파일
+	yarn.lock			패키지 잠금파일
+	
+4.	router 추가
+	[vue add router]
+
+=========================================================================================================
+  vue.js 기초문법
+=========================================================================================================
+
+1. 	조건문
+	<template>
+		<div>
+			<!-- if 문 -->
+			<div v-if="[조건]">
+			</div>
+			
+			<!-- if else문 -->
+			<div v-if="[조건]">
+			</div>
+			<div v-if-else="[if else 조건]">
+			</div>
+			<div v-else>
+			</div>
+		</div>
+	</template>
+	
+2.	반복문
+	<template>
+		<div>
+			<!-- for문 -->
+			<ul>
+				<li v-for="num in numbers">{{n}}</li>
+			</ul>
+			
+			<!-- for문 + if문 -->
+			<ul>
+				<li v-for="num in numbers">
+					<template v-if="n%2===0"> {{n}} </template>
+				</li>
+			</ul>
+		</div>
+	</template>
+
+
+=========================================================================================================
+  참고
+=========================================================================================================
+
+1.  vue init webpack ~ 으로 프로젝트를 생성할 경우
+	[config > index.js]에서 설정 가능
+	
+	가볍게 다른 포트로 변경할 일이 있을 때 구동 방법
+	[npm run dev -- --port {port-num}]
+	
+2.	데이터 통신을 위한 axios 설정
+	[npm install --save axios]
+	
+	src > main.js 에서 import 해주면 전역에서 사용가능
+		import axios from 'axios'
+		Vue.prototype.$http = axios
+		
+		this.$http를 통해 axios 사용가능
+
+3. 	Component name "~~" should always be multi-word 에러 해결방법
+	html 태그와 헷갈리지 않기 위해 설정해 놓은 vue.js 내부 policy이다.
+	해결하기 위해서 컴포넌트의 이름을 변경하던가 vue.config.js 파일에
+	[lintOnSave : false] 를 추가한 후 server을 내렸다가 올리면 제대로 작동한다.
+	
+	만약 eslintrc.js 파일이 존재한다면
+	rules:{
+		"vue/multi-word-component-names":[
+			"error",{"ignores":["default"]}
+		]
+	}
+	추가
+	
+4.	vue.js eslint parsing error 해결방법
+	root폴더 아래 .eslintrc.json 파일 생성 후 아래 작성
+	{
+		"parser":"@babel/eslint-parser",
+		"parserOptions":{"requireConfigFile" : "false"},
+		"babelOptions":{"configFile":"./.babelrc"}
+	}

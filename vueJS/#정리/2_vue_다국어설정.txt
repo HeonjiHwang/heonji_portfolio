@@ -1,0 +1,76 @@
+1. 	installation
+	npm일 경우	 ---->	[npm install vue-i18n@버전]  최신버전 8
+	yarn일 경우 --->	[yarn add vue-i18n@버전]
+	
+2.	src > locale
+	
+	/* json 파일을 읽어서 language 변환 */
+	<index.js>
+	
+	import Vue from 'vue'
+	import VueI18n from 'vue-i18n'
+	
+	//json 파일 읽어드리는 함수
+	const requireLang = require.context(
+		'@/locale',	//index.js가 있는 폴더
+		true,
+		/\.json$/	//정규식
+	)
+	
+	//json 정보 담을 변수
+	const messages = {};
+	
+	//json파일 읽기
+	for(const file of requireLang.keys()){
+		if(file === './index.js') continue;
+		
+		const path = file.replace(/(\.\/|\.json$)/g, '').split("/");
+		path.reduce((o, s, i)=>{
+			if(o[s]) return o[s];
+			o[s] = i+1 === path.length ? requireLang(file) : {}
+			
+			return o[s];
+		}, messages);	
+	}
+	
+	Vue.use(VueI18n);
+	
+	const i18n = new VueI18n({
+		locale : 'ko',			//기본언어
+		fallbackLocale : 'en',	//보조언어
+		messages,
+		silentTranslationWarn	//해당 언어가 없을 경우 warning
+	});
+	
+	export default i18n;
+	
+3. 	적용
+
+	/* 다국어 설정 불러들이기 */
+	<main.js>
+	import i18n from '@/locale'	//locale폴더 아래의 index.js파일 읽음
+	
+	new Vue({
+		...,
+		i18n,
+		...
+	}).$mount('#app')
+	
+	/*사용자 디바이스에 설정되어 있는 언어로 다국어 설정*/
+	<App.vue>
+	export default {
+		...,
+		created(){
+			let locale = navigator.language || navigator.userLanguage,
+			locale = locale.substring(0,2);
+			if(locale != 'ko') locale = 'en';
+			this.$i18n.locale = locale;
+		},
+		...
+	}
+	
+	/*적용법*/
+	- 태그일 경우
+	  {{$t('')}}
+	- 스크립트일 경우
+	  this.$t('');
