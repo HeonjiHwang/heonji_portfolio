@@ -1,0 +1,103 @@
+1.	ref
+	[import {ref} from 'vue']
+	
+	ref를 사용해 반응형 변수로 data를 대체
+	ref를 사용해 자바스크립트 함수로 methos를 대체
+	
+2.	라이프사이클 훅
+	beforeMount			onBeforeMount
+	mounted				onMounted
+	beforeUpdate		onBeforeUpate
+	updated				onUpdated
+	beforeUnmount		onBeforeUnmount
+	errorCaptured		onErrorCaptured
+	renderTracked		onRenderTracked
+	renderTriggered		onRenderTriggered
+	
+3.	그 외
+	watch함수 : 반응형 변수의 변경 탐지
+	computed제공
+	
+ex)
+import {ref, onMounted} from 'vue'
+
+export default {
+	props:{
+		name:[이름]
+	},
+	setup(props, context){
+		const isSubmited = ref(false);
+		const onSubmit = () =>{
+			isSubmited.value = false;
+		}
+		
+		onMounted(()=>{
+			console.log(mounted)
+		})
+		
+		//template에 전달
+		return {
+			isSubmited, onSubmit
+		}
+	}
+}	
+
+setup함수는 컴포넌트 인스턴스가 생성되기 전에 실행되어 this를 통해 컴포넌트 객체(data, computed, methods)에 접근이 불가능하다.
+created 메소드에 매칭되는 라이프사이클 훅 존재하지 않는다.
+
+setup 함수는 return을 사용해 템플릿으로 값을 넘기는 과정이 필요하다는 붚편함이 있다.
+
+4.	script setup
+	ex)
+	<script setup>
+		import {ref} from 'vue'
+		import {greet} from 'component_greet';
+		
+		const props = defineProps({
+			age : {
+				type:Number,
+				required:true
+			}
+		});
+		
+		const emit = defineEmits(['subscribe:user", "subscribe"]);
+		
+		const email = computed({
+			get(){
+				return props.email
+			},
+			set(value){
+				emit("subscribe:user", value);
+			}
+		});
+		
+		function subscribe(){
+			emit("subscribe");
+		}
+		
+		const name = ref('Joe');
+		const msg = 'Hello!';
+		
+		let log = ()=>{
+			console.log(msg);
+		}
+	</script>
+	
+	<template>
+		<div @click="log">{{msg}}</div>
+		<div>{{greet("good afternoon")}}</div>
+		
+		<form @submit.prevent="subscribe" v-if="props.age">
+			<label>
+				Email
+				<input v-model="email" type="email"/>
+			</label>
+			<button>Subscribe</button>
+		</form>
+	</template>
+	
+	
+	- defineProps
+	  컴포넌트의 props를 정의하는 것
+	- defineEimts
+	  컴포넌트가 사용할 수 있는 이벤트들을 정의한 것
