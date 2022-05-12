@@ -34,7 +34,25 @@ vue는 다운로드 받아 직접 <script>에 추가하거나 CDN으로 불러�
 	yarn.lock			패키지 잠금파일
 	
 4.	router 추가
-	[vue add router]
+	[yarn add vue-router]
+	
+	** scr > router > index.js **
+	import {createWebHistory, createRouter} from 'vue-router';
+	
+	const routes = [
+		{
+			path:''
+			name:''
+			component:()=>import('')
+		}
+	];
+	const router = createRouter({history:createWebHistroy(), routes});
+	
+	export default router;
+	
+	** main.js **
+	import router from './router';
+	app.use(router);
 
 =========================================================================================================
   vue.js 기초문법
@@ -89,10 +107,16 @@ vue는 다운로드 받아 직접 <script>에 추가하거나 CDN으로 불러�
 	[npm install --save axios]
 	
 	src > main.js 에서 import 해주면 전역에서 사용가능
-		import axios from 'axios'
-		Vue.prototype.$http = axios
-		
-		this.$http를 통해 axios 사용가능
+	
+	[Vue 3의 경우]
+	import axios from 'axios';
+	const app = createApp(App);
+	app.config.globalProperties.$axios = axios;		//this.axios를 통해 axios 사용가능
+	app.mount("#app");
+	
+	[Vue 2의 경우]
+	import axios from 'axios'
+	Vue.prototype.$http = axios						//this.$axios를 통해 사용가능
 
 3. 	Component name "~~" should always be multi-word 에러 해결방법
 	html 태그와 헷갈리지 않기 위해 설정해 놓은 vue.js 내부 policy이다.

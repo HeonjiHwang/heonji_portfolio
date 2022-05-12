@@ -1,0 +1,42 @@
+@import './reset';
+
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+}
+
+header{
+    width:100%;
+    height:50px;
+    background-color:#fff;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom:1px solid #e4e4e4;
+
+    .logoWrapper{
+        margin-left:20px;
+        .homelink{
+            display: flex;
+            align-items: center;
+            h1{
+                margin-left:10px;
+                font-weight: bold;
+            }
+        }
+    }
+    .menuWrapper{
+        margin-right:20px;
+        ul{
+            display:flex;
+            li{
+                margin-left:20px;
+                font-weight: bold;
+            }
+        }
+    }
+}
