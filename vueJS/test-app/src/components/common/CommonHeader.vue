@@ -9,7 +9,7 @@
         <div class="menuWrapper">
             <ul>
                 <li><router-link to="/">HOME</router-link></li>
-                <li><a href="#">MAP</a></li>
+                <li><a href="#">TEST</a></li>
                 <li><a href="#">MY PAGE</a></li>
             </ul>
         </div>

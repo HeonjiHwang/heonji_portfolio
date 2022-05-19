@@ -9,6 +9,12 @@
     color: #2c3e50;
 }
 
+body{
+    -ms-overlow-style:none;
+    ::-webkit-scrollbar{
+        display: none;
+    }
+}
 header{
     width:100%;
     height:50px;
@@ -17,6 +23,8 @@ header{
     justify-content: space-between;
     align-items: center;
     border-bottom:1px solid #e4e4e4;
+    position:fixed;
+    top:0px;
 
     .logoWrapper{
         margin-left:20px;
@@ -38,5 +46,26 @@ header{
                 font-weight: bold;
             }
         }
+    }
+}
+
+.wrapper{
+    width:100%;
+    height:calc(100vh - 50px);
+    margin-top:50px;
+    overflow-x:hidden;
+    overflow-y: auto;
+    background-color:rgb(53, 31, 75);
+    color:white;
+    -ms-overlow-style:none;
+    ::-webkit-scrollbar{
+        display: none;
+    }
+    .page{
+        width:100%;
+        height:100%;
+    }
+    .page2{
+        background-color:rgb(234, 229, 236);
     }
 }
