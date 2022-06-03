@@ -6,10 +6,12 @@ module.exports = {
             WHEN DATEDIFF(pwd_changed_time, now()) > 90 THEN 1    
             ELSE 0 END is_lock,
             CASE WHEN failed_count < 6 AND '${user_pwd}' = ui.user_pwd THEN 1 ELSE 0 END is_valid,
-            failed_count , user_cd, user_id, user_name, phone_num, email,
+            failed_count , user_cd, user_id, user_name, ui.authority_id, ai.authority_name, phone_num, email,
             last_login_time, last_login_ip,
             90 - DATEDIFF(pwd_changed_time, now()) pwd_remain
             FROM user_info ui
+            inner join authority_info ai 
+            on ai.authority_id = ui.authority_id 
             WHERE ui.user_id = '${user_id}'
         `;
     },

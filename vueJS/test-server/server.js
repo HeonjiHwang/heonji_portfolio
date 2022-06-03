@@ -95,6 +95,7 @@ router.post("/signin", (req, res)=>{
     res.send({isSuccess:returnValue});
 })
 
+
 //backoffice용 express server
 router.post("/office/signin", (req, res)=>{
     let body = req.body;
@@ -108,10 +109,22 @@ router.post("/office/signin", (req, res)=>{
             return;
         }
 
-        res.json({isSuccess:true, data:result})
+        let {is_valid, is_lock, failed_count, user_cd} = result[0];
+        
+        signinModule.setSignInInfo(dbConn, {is_valid, is_lock, failed_count, user_cd, ip}).then(returnVal => {
 
-        signinModule.setLoginInfo(dbConn, result[0]);
+            //접속기록
+            if(returnVal.flag)
+                signinModule.setAccessInfo(dbConn, {user_cd, flag : returnVal.flag, page:'signin', ip});
+            
+            if(returnVal.isOK){
+                res.json({isSuccess:true, data:result})
+            }else{
+                res.json({isSuccess:false, data:returnVal.msg})
+            }
+
+        })
     });
-})
+});
 
 module.exports = router;
