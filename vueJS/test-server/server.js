@@ -1,4 +1,9 @@
 const router = require("express").Router();
+const dbConfig = require("./db/config.js");
+const queryMapper = require("./db/queryMapper.js");
+const signinModule = require("./common/siginInModule.js");
+const dbConn = dbConfig.init();
+dbConfig.connect(dbConn);
 
 //my-app용 express server
 
@@ -90,5 +95,23 @@ router.post("/signin", (req, res)=>{
     res.send({isSuccess:returnValue});
 })
 
+//backoffice용 express server
+router.post("/office/signin", (req, res)=>{
+    let body = req.body;
+    let ip = req.headers['x-forwarded-for'];
+
+    let sql = queryMapper.getSignInfo(body);
+    dbConn.query(sql, (err, result) => {
+        if(err){
+            console.error(err);
+            res.json({isSuccess:false, msg:err});
+            return;
+        }
+
+        res.json({isSuccess:true, data:result})
+
+        signinModule.setLoginInfo(dbConn, result[0]);
+    });
+})
 
 module.exports = router;

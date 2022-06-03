@@ -1,0 +1,16 @@
+*cmd mysql 사용
+	mysql -u root -p
+
+* database list 보기
+	show databases;
+
+* database 선택
+	use [dbname]
+
+* table 선택
+	use [table_name]
+	
+	
+** node.js mysql 연동
+	authentication 에러 해결
+	[]
