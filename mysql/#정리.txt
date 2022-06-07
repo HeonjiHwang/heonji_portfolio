@@ -1,3 +1,5 @@
+*설치 후 환경변수 설정!!
+
 *cmd mysql 사용
 	mysql -u root -p
 
@@ -7,9 +9,8 @@
 * database 선택
 	use [dbname]
 
-* table 선택
-	use [table_name]
-	
+* table list 보기
+	show tables;
 	
 ** node.js mysql 연동
 	authentication 에러 해결
