@@ -51,7 +51,7 @@ function onClickSignIn(e){
                 let result = data.data[0];
                 let stData = {user_cd:result.user_cd, user_name:result.user_name, authority_id:result.authority_id, user_id:result.user_id, authority_name:result.authority_name};
                 store.commit('userStore/setUserInfo', stData)
-                router.push({path:'mainHome'});
+                router.push({path:'home'});
             }else{
                 alert(data.msg);
                 return;

@@ -8,6 +8,6 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use("/", server);
 
-app.listen(3000, ()=>{
-    console.log("Server on : http:localhost:3000");
+app.listen(9000, ()=>{
+    console.log("Server on : http:localhost:9000");
 })

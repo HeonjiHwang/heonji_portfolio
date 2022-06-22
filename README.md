@@ -1,4 +1,4 @@
-# heonji_portfolio
+## heonji_portfolio
 황현지_포트폴리오
 
 - vue.js

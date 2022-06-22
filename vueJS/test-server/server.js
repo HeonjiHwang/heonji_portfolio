@@ -101,6 +101,7 @@ router.post("/office/signin", (req, res)=>{
     let body = req.body;
     let ip = req.headers['x-forwarded-for'];
 
+    console.log(body);
     let sql = queryMapper.getSignInfo(body);
     dbConn.query(sql, (err, result) => {
         if(err){
